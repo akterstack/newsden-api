@@ -17,9 +17,10 @@ type Article {
   publishedAt: String
   content: String
   source: Source
+  body: String
 }
 
 type Query {
-  hello: String
+  sources: [Source]
   articles: [Article]
 }

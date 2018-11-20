@@ -1,23 +1,27 @@
 import fs from "fs";
 import path from 'path';
-
+import {
+  fetchSources,
+  fetchArticles
+} from './repository'
 import {
   ApolloServer
 } from 'apollo-server'
 
 const typeDefs = [fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8")]
-import NewsRepository from './NewsRepository'
-
-const repository = new NewsRepository()
 
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    articles: async () => {
-
-      let data = await repository.fetchArticles()
-      //console.log(data);
-      return data.articles;
+    sources: async () => fetchSources(),
+    articles: async () => fetchArticles()
+  },
+  Article: {
+    body: (article) => {
+      let body = ''
+      for (let i = 0; i < 10; i++)
+        body += article.content + '<br/>'
+      return body
     }
   }
 };
